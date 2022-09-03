@@ -19,18 +19,49 @@
  * 문자열도 사용할 수 있는걸로 착각했습니다.
  * 고차 함수를 사용하거나 반복문을 사용할 때 매개변수 이름을 적절한 이름을 생각하지않고
  * 습관적으로 item, v, index로 표현하는 버릇을 고쳐야겠습니다.
+ *
+ * 숫자를 분리할 때, 문자열로 변경하는 것 뿐 아닌
+ * 나머지연산자를 이용하는 습관을 들여야겠다는 생각이 들었습니다.
  */
 
-const solution = (number) => {
-  return number
-    .toString()
-    .split('')
-    .reverse()
-    .map((num) => +num);
+// const solution = (number) => {
+//   return number
+//     .toString()
+//     .split('')
+//     .reverse()
+//     .map((num) => +num);
+// };
+
+// while
+// const solution = (number) => {
+//   const numbers = [];
+
+//   let num = number;
+
+//   while (num > 0) {
+//     numbers.push(num % 10);
+
+//     num = Math.floor((num /= 10));
+//   }
+
+//   return numbers;
+// };
+
+// 재귀
+const solution = (number, numbers = []) => {
+  if (number <= 0) {
+    return numbers;
+  }
+
+  numbers.push(number % 10);
+
+  return solution(Math.floor(number / 10), numbers);
 };
 
 describe('자연수 뒤집어 배열로 만들기', () => {
   it('자연수를 뒤집어 배열로 만든 값을 리턴합니다.', () => {
     expect(solution(12345)).toEqual([5, 4, 3, 2, 1]);
+    expect(solution(1)).toEqual([1]);
+    expect(solution(20)).toEqual([0, 2]);
   });
 });
