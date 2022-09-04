@@ -35,34 +35,35 @@
  *        - # 면 score[score.length -1 * -1]을 해준다.
  * 3. score의 합을 반환한다.
  * 반성
- * ....!
+ * 왜 처음에 forEach를 포기하지 못했을까...
+ * forEach를 포기하고 반복문으로 전환했으면 훨씬 쉽게 풀었을텐데..
+ * 코드가 잘못되었으면 설계했던 코드가 아깝고 아쉽더라도
+ * 다른 로직을 적용해야하는데 미련하게 행동했던 것 같다....
  */
 
 const solution = (dartResult) => {
   const totalScore = [];
 
-  dartResult.split('').forEach((score, i) => {
-    if (isNaN(score)) {
-      if (score === 'D') {
-        totalScore[totalScore.length - 1] **= 2;
+  for (let i = 0; i < dartResult.length; i += 1) {
+    const score = dartResult[i];
+    if (score >= 0 && score <= 9) {
+      if (score === '1' && dartResult[i + 1] === '0') {
+        totalScore.push(+10);
+        i += 1;
+      } else {
+        totalScore.push(+score);
       }
-      if (score === 'T') {
-        totalScore[totalScore.length - 1] **= 3;
-      }
-      if (score === '*') {
-        totalScore[totalScore.length - 1] *= 2;
-        totalScore[totalScore.length - 2] *= 2;
-      }
-      if (score === '#') {
-        totalScore[totalScore.length - 1] *= -1;
-      }
-    } else if (score === '1' && !isNaN(dartResult[i + 1])) {
-      totalScore.push(10);
-    } else if (score === '0' && totalScore[totalScore.length - 1] === 10) {
-    } else {
-      totalScore.push(+score);
+    } else if (score === 'D') {
+      totalScore[totalScore.length - 1] **= 2;
+    } else if (score === 'T') {
+      totalScore[totalScore.length - 1] **= 3;
+    } else if (score === '*') {
+      totalScore[totalScore.length - 1] *= 2;
+      totalScore[totalScore.length - 2] *= 2;
+    } else if (score === '#') {
+      totalScore[totalScore.length - 1] *= -1;
     }
-  });
+  }
 
   return totalScore.reduce((a, b) => a + b, 0);
 };
