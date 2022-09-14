@@ -16,24 +16,27 @@
  * 정규표현식을 많이 사용해봐야겠습니다.
  */
 
+// const input = require('fs').readFileSync('/dev/stdin').toString();
+
 const solution = (str) => {
-  const zeroRegExp = /0/g;
-  const oneRegExp = /1/g;
-  const consecutiveZeros = /0{2,}/g;
-  const consecutiveOnes = /1{2,}/g;
+  const consecutiveZeros = /0+/gm;
+  const consecutiveOnes = /1+/gm;
 
-  const one = str.replace(zeroRegExp, '');
-  const zero = str.replace(oneRegExp, '');
+  const one = str.split(consecutiveOnes).filter((s) => s !== '').length;
 
-  if (one.length > zero.length) {
-    return str.split(consecutiveOnes).filter((s) => s !== '').length;
-  }
+  const zero = str.split(consecutiveZeros).filter((s) => s !== '').length;
 
-  return str.split(consecutiveZeros).filter((s) => s !== '').length;
+  return one > zero ? zero : one;
 };
+
+// console.log(solution(input));
 
 describe('문자열 뒤집기', () => {
   it('같은 숫자로 만들기 위한 최소 뒤집기 횟수를 리턴합니다.', () => {
     expect(solution('0001100')).toBe(1);
+    expect(solution('11111')).toBe(0);
+    expect(solution('00000001')).toBe(1);
+    expect(solution('11101101')).toBe(2);
+    expect(solution('11001100110011000001')).toBe(4);
   });
 });
